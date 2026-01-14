@@ -63,6 +63,20 @@ impl ksni::Tray for AppTray {
         };
 
         vec![
+            // Show settings window
+            StandardItem {
+                label: "Open Settings".into(),
+                activate: Box::new(|this: &mut AppTray| {
+                    this.ctx
+                        .send_viewport_cmd(egui::ViewportCommand::Visible(true));
+                    this.ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
+                    this.ctx.request_repaint();
+                }),
+                ..Default::default()
+            }
+            .into(),
+            // Separator
+            MenuItem::Separator,
             // Refresh item
             StandardItem {
                 label: "Refresh".into(),
