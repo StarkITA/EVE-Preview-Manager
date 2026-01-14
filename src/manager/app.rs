@@ -232,9 +232,15 @@ impl eframe::App for ManagerApp {
         }
 
         // Handle quit request from tray menu
-
         if state.should_quit {
             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+            return;
+        }
+
+        // If user closes the window, keep the app running in the tray.
+        if ctx.input(|i| i.viewport().close_requested()) {
+            ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
             return;
         }
 
